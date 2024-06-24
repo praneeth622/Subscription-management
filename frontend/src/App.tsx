@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import subscribe from './pages/subscribe';
 import ProtectedRoute from '../src/ProtectedRoute';
-import { SignedIn } from '@clerk/clerk-react';
 
 
 const App = () => {
@@ -13,6 +13,7 @@ const App = () => {
         <Route path="/dashboard" element={<ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>} />
+        <Route path="/subscribe" element={<subscribe />} />
       </Routes>
     </Router>
   );

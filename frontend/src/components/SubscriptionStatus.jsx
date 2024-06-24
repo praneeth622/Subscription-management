@@ -10,7 +10,7 @@ const SubscriptionStatus = () => {
       {isSubscribed ? (
         <p className="text-green-600">You are subscribed!</p>
       ) : (
-        <p className="text-red-600">You are not subscribed.</p>
+        <a href='/subscribe' className="text-red-600">You are not subscribed.</a>
       )}
     </div>
   );

@@ -1,7 +1,6 @@
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import SubscriptionStatus from './SubscriptionStatus'
-import subscribe from '../pages/subscribe'
 
 const Navbar = () => {
   const { user } = useUser();
@@ -15,7 +14,6 @@ const Navbar = () => {
               <Link to="/" className="text-xl font-bold">
                 My App
               </Link>
-              <subscribe />
             </div>
             <div className="ml-auto flex items-center">
               <div>

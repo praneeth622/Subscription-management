@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import subscribe from './pages/subscribe';
 import ProtectedRoute from '../src/ProtectedRoute';
+import Subscribe from './pages/Subscribe';
 
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         <Route path="/dashboard" element={<ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>} />
-        <Route path="/subscribe" element={<subscribe />} />
+        <Route path="/subscribe" element={<Subscribe />} />
       </Routes>
     </Router>
   );

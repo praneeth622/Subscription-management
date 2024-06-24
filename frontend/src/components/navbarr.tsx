@@ -6,12 +6,12 @@ const Navbar = () => {
   const { user } = useUser();
 
   return (
-    <nav className="bg-white shadow">
+    <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex-shrink-0">
-              <Link to="/" className="text-xl font-bold">
+              <Link to="/dashboard" className="text-xl font-bold">
                 My App
               </Link>
             </div>

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import Navbar from "../components/navbarr";
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Razorpay from "razorpay";
 
 interface PricingPlan {
   title: string;
@@ -11,15 +12,15 @@ interface PricingPlan {
   period: string;
   features: string[];
 }
-declare var Razorpay: any;
 
 function Subscribe() {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
+  const [paymentId,setPaymentId] = useState('')
 
-  const handlePayment = async (amount: number | string) => {
+  const handlePayment = async (amount: number) => {
     try {
-      const response = await axios.post('/payment/razorpay', {
-        amount: Number(amount), // Ensure amount is converted to number
+      const response = await axios.post('http://localhost:5000/payment/razorpay', {
+        amount, // Ensure amount is converted to number
       });
 
       const { data } = response;
@@ -32,22 +33,19 @@ function Subscribe() {
         name: "Subscribtion managment",
         description: "for testing purpose",
         handler: function (response: any) {
-          console.log(response);
           toast.success('Payment Successful');
-
-          const paymentId = response.razorpay_payment_id;
-          // Perform further actions with paymentId as needed
+          setPaymentId(response.razorpay_payment_id)
         },
         theme: {
           color: '#528FF0',
         },
       };
 
-      const razorpay = new (window as any).Razorpay(options);
-      razorpay.open();
+      let rzp = new window.Razorpay(options);
+      rzp.open();
 
     } catch (error) {
-      console.error('Error initiating payment:', error);
+      console.error('Error initiating payment at frontend: ', error);
       toast.error('Failed to initiate payment');
     }
   };
@@ -69,7 +67,7 @@ function Subscribe() {
     {
       title: "Basic",
       description: "Relevant for multiple users, extended & premium support.",
-      price: "₹10",
+      price: "10",
       period: "/month",
       features: [
         "Individual configuration",
@@ -83,7 +81,7 @@ function Subscribe() {
       title: "Enterprise",
       description:
         "Best for large scale uses and extended redistribution rights.",
-      price: "₹50",
+      price: "50",
       period: "/month",
       features: [
         "Individual configuration",
@@ -115,7 +113,7 @@ function Subscribe() {
                   </p>
                   <div className="flex justify-center items-baseline my-8">
                     <span className="mr-2 text-5xl font-extrabold">
-                      {plan.price}
+                    ₹{plan.price}
                     </span>
                     <span className="text-gray-500">{plan.period}</span>
                   </div>
@@ -140,7 +138,7 @@ function Subscribe() {
                   </ul>
                   <button
                     className="text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                    onClick={() => handlePayment(plan.price)}
+                    onClick={() => handlePayment(parseInt(plan.price))}
                   >
                     Get started
                   </button>
@@ -149,6 +147,7 @@ function Subscribe() {
             </div>
           </div>
         </section>
+        <ToastContainer/>
       </div>
     </div>
   );

@@ -37,13 +37,14 @@ const User = mongoose.model('User', userSchema);
 
 // Razorpay instance
 const razorpay = new Razorpay({
-  key_id: 'rzp_test_zgAAsQPNkntJ1',
-  key_secret: 'Qhj1owYbcPBUWhAgBP8MIgnc',
+  key_id: 'rzp_test_7kbetSV9IQQW2J',
+  key_secret: 'aqrnceFu4yxSUJ34SFBXZe7q',
 });
 
 // Route to initiate Razorpay payment
 app.post('/payment/razorpay', async (req, res) => {
   const amount = req.body.amount;
+  console.log(amount)
 
   try {
     const payment_capture = 1; // Capture payment immediately

@@ -9,5 +9,5 @@ mongooose.connect("mongodb+srv://praneethdevarasetty31:8qgJLzdzAjMvKssx@cluster0
     console.log(err)
 })
 
-const db = mongoose.connection;
+const db = mongooose.connection;
 module.exports = db

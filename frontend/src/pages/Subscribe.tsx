@@ -24,23 +24,44 @@ function Subscribe() {
       });
 
       const { data } = response;
+      console.log(response)
       const options = {
         key: "rzp_test_zgAAsQPNkntJ1P",
         key_secret: "Qhj1owYbcPBUWhAgBP8MIgnc",
-        amount: data.amount*100,
+        amount: data.amount,
         currency: "INR",
         order_receipt: 'order_rcptid_' + data.name,
         name: "Subscribtion managment",
         description: "for testing purpose",
         handler: function (response: any) {
-          toast.success('Payment Successful');
+          // toast.success('Payment Successful');
+          console.log("response",response)
+          const paymentResponse = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.data.id,
+            razorpay_signature: response.razorpay_signature
+          };
+          console.log(paymentResponse)
+          axios.post('http://localhost:5000/payment/razorpay/callback', paymentResponse)
+          .then(res => {
+            if (res.data.status === 'Payment verified successfully') {
+              toast.success('Payment Successful');
+              setPaymentId(response.razorpay_payment_id);
+            } else {
+              toast.error('Payment verification failed');
+            }
+          })
+          .catch(error => {
+            console.error('Error verifying payment:', error);
+            toast.error('Payment verification failed');
+          });
           setPaymentId(response.razorpay_payment_id)
         },
         theme: {
           color: '#528FF0',
         },
       };
-
+      //@ts-ignore
       let rzp = new window.Razorpay(options);
       rzp.open();
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const razorpay = require("./Payment/Razorpay");
 const Razorpay = require("razorpay");
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
@@ -11,7 +12,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Define schemas
 const transactionSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   gateway: { type: String },
@@ -36,12 +36,6 @@ const userSchema = new mongoose.Schema({
 const Transaction = mongoose.model("Transaction", transactionSchema);
 const User = mongoose.model("Subscriber", userSchema);
 
-// Razorpay instance
-const razorpay = new Razorpay({
-  key_id: "rzp_test_7kbetSV9IQQW2J",
-  key_secret: "aqrnceFu4yxSUJ34SFBXZe7q",
-});
-
 //creating user
 app.post("/user", async (req, res) => {
   const { email, Id } = req.body;
@@ -50,8 +44,7 @@ app.post("/user", async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      // Update user
-      user.password = Id; // Update other fields as necessary
+      user.password = Id;
       await user.save();
       res.json({ message: "User updated successfully" });
     } else {
@@ -75,9 +68,9 @@ app.post("/user", async (req, res) => {
 });
 
 //checking subscribtion status
-app.post('/user/subscription', async (req, res) => {
+app.post("/user/subscription", async (req, res) => {
   const { email } = req.body;
-  console.log(email)
+  console.log(email);
   try {
     const user = await User.findOne({ email });
 
@@ -87,12 +80,11 @@ app.post('/user/subscription', async (req, res) => {
 
     res.json({ subscriptionStatus: user.subscriptionStatus });
   } catch (error) {
-    console.error('Error fetching subscription status:', error.message);
-    res.status(500).json({ error: 'Failed to fetch subscription status' });
+    console.error("Error fetching subscription status:", error.message);
+    res.status(500).json({ error: "Failed to fetch subscription status" });
   }
 });
 
-// Route to initiate Razorpay payment
 app.post("/payment/razorpay", async (req, res) => {
   const amount = req.body.amount;
   const userEmail = req.body.userId[0].emailAddress;
@@ -126,7 +118,6 @@ app.post("/payment/razorpay", async (req, res) => {
   }
 });
 
-// Route to handle Razorpay payment callback
 app.post("/payment/razorpay/callback", async (req, res) => {
   const {
     razorpay_payment_id,
@@ -149,7 +140,6 @@ app.post("/payment/razorpay/callback", async (req, res) => {
   console.log("2");
   if (generated_signature === razorpay_signature) {
     try {
-      // Update the transaction status to 'completed'
       const transaction = await Transaction.findOneAndUpdate(
         { transactionId: razorpay_order_id },
         { status: "completed" },

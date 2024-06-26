@@ -10,6 +10,7 @@ interface PricingPlan {
   title: string;
   description: string;
   price: string;
+  amount:Number;
   period: string;
   features: string[];
 }
@@ -21,7 +22,10 @@ function Subscribe() {
 
   const userId = user?.emailAddresses
 
-  const handlePayment = async (amount: number) => {
+  const handlePayment = async (amount: Number) => {
+    if (amount == 0){
+      return toast.success("Free Plan Activated")
+    }
     try {
       const res = await axios.post('http://localhost:5000/payment/razorpay', {
         amount, // Ensure amount is converted to number
@@ -73,6 +77,15 @@ function Subscribe() {
       //@ts-ignore
       let rzp = new window.Razorpay(options);
       rzp.open();
+      rzp.on('payment.failed', function (response : any){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+    })
 
     } catch (error) {
       console.error('Error initiating payment at frontend: ', error);
@@ -85,6 +98,7 @@ function Subscribe() {
       title: "Starter",
       description: "Best option for personal use & for your next project.",
       price: "Free",
+      amount:0,
       period: "/month",
       features: [
         "Individual configuration",
@@ -98,6 +112,7 @@ function Subscribe() {
       title: "Basic",
       description: "Relevant for multiple users, extended & premium support.",
       price: "10",
+      amount:10,
       period: "/month",
       features: [
         "Individual configuration",
@@ -112,6 +127,7 @@ function Subscribe() {
       description:
         "Best for large scale uses and extended redistribution rights.",
       price: "50",
+      amount:50,
       period: "/month",
       features: [
         "Individual configuration",
@@ -168,7 +184,7 @@ function Subscribe() {
                   </ul>
                   <button
                     className="text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                    onClick={() => handlePayment(parseInt(plan.price))}
+                    onClick={() => handlePayment(plan.amount)}
                   >
                     Get started
                   </button>

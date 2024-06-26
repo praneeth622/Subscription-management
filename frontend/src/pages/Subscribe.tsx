@@ -4,6 +4,7 @@ import Navbar from "../components/navbarr";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Razorpay from "razorpay";
+import { useUser } from "@clerk/clerk-react";
 
 interface PricingPlan {
   title: string;
@@ -16,30 +17,36 @@ interface PricingPlan {
 function Subscribe() {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
   const [paymentId,setPaymentId] = useState('')
+  const {user} = useUser();
+
+  const userId = user?.emailAddresses
 
   const handlePayment = async (amount: number) => {
     try {
-      const response = await axios.post('http://localhost:5000/payment/razorpay', {
+      const res = await axios.post('http://localhost:5000/payment/razorpay', {
         amount, // Ensure amount is converted to number
+        userId
       });
 
-      const { data } = response;
-      console.log(response)
+      const { data } = res;
+      console.log("data",data)
       const options = {
-        key: "rzp_test_zgAAsQPNkntJ1P",
-        key_secret: "Qhj1owYbcPBUWhAgBP8MIgnc",
+        key: "rzp_test_7kbetSV9IQQW2J",
+        // key_secret: "Qhj1owYbcPBUWhAgBP8MIgnc",
         amount: data.amount,
         currency: "INR",
-        order_receipt: 'order_rcptid_' + data.name,
+        // order_receipt: 'order_rcptid_' + data.name,
         name: "Subscribtion managment",
         description: "for testing purpose",
+        order_id: data.id,
         handler: function (response: any) {
           // toast.success('Payment Successful');
           console.log("response",response)
           const paymentResponse = {
             razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.data.id,
-            razorpay_signature: response.razorpay_signature
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+            userEmail: data.userEmail
           };
           console.log(paymentResponse)
           axios.post('http://localhost:5000/payment/razorpay/callback', paymentResponse)
@@ -107,7 +114,7 @@ function Subscribe() {
       features: [
         "Individual configuration",
         "No setup, or hidden fees",
-        "Team size: 100+ developers",
+        `Team size: 100+ developers`,
         "Premium support: 36 months",
         "Free updates: 36 months",
       ],

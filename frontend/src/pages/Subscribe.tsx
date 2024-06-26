@@ -40,7 +40,6 @@ function Subscribe() {
         description: "for testing purpose",
         order_id: data.id,
         handler: function (response: any) {
-          // toast.success('Payment Successful');
           console.log("response",response)
           const paymentResponse = {
             razorpay_payment_id: response.razorpay_payment_id,
@@ -54,6 +53,9 @@ function Subscribe() {
             if (res.data.status === 'Payment verified successfully') {
               toast.success('Payment Successful');
               setPaymentId(response.razorpay_payment_id);
+              setTimeout(() => {
+                window.location.reload()
+              }, 5000);
             } else {
               toast.error('Payment verification failed');
             }

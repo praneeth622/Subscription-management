@@ -74,6 +74,24 @@ app.post("/user", async (req, res) => {
   }
 });
 
+//checking subscribtion status
+app.post('/user/subscription', async (req, res) => {
+  const { email } = req.body;
+  console.log(email)
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: email });
+    }
+
+    res.json({ subscriptionStatus: user.subscriptionStatus });
+  } catch (error) {
+    console.error('Error fetching subscription status:', error.message);
+    res.status(500).json({ error: 'Failed to fetch subscription status' });
+  }
+});
+
 // Route to initiate Razorpay payment
 app.post("/payment/razorpay", async (req, res) => {
   const amount = req.body.amount;

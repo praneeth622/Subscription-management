@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 const cors = require("cors");
 const crypto = require("crypto");
+require('dotenv').config();
 const db = require("./conn/conn");
 
 const app = express();
@@ -133,8 +134,7 @@ app.post("/payment/razorpay/callback", async (req, res) => {
   if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
     return res.status(400).json({ error: "Missing required fields" });
   }
-  // console.log(process.env.RAZORPAY_KEY_SECRET)
-  const hmac = crypto.createHmac("sha256", "aqrnceFu4yxSUJ34SFBXZe7q");
+  const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
   hmac.update(`${razorpay_order_id}|${razorpay_payment_id}`);
   const generated_signature = hmac.digest("hex");
   console.log("2");

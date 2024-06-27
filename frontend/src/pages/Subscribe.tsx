@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 import Navbar from "../components/navbarr";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,8 +15,7 @@ interface PricingPlan {
 }
 
 function Subscribe() {
-  const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
-  const [paymentId,setPaymentId] = useState('')
+  
   const {user} = useUser();
 
   const userId = user?.emailAddresses
@@ -56,7 +54,6 @@ function Subscribe() {
           .then(res => {
             if (res.data.status === 'Payment verified successfully') {
               toast.success('Payment Successful');
-              setPaymentId(response.razorpay_payment_id);
               setTimeout(() => {
                 window.location.reload()
               }, 5000);
@@ -68,7 +65,6 @@ function Subscribe() {
             console.error('Error verifying payment:', error);
             toast.error('Payment verification failed');
           });
-          setPaymentId(response.razorpay_payment_id)
         },
         theme: {
           color: '#528FF0',

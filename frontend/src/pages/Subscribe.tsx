@@ -3,7 +3,10 @@ import Navbar from "../components/navbarr";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Razorpay from "razorpay";
+import { LoaderCircle } from 'lucide-react';
 import { useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface PricingPlan {
   title: string;
@@ -17,6 +20,8 @@ interface PricingPlan {
 function Subscribe() {
   
   const {user} = useUser();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const userId = user?.emailAddresses
 
@@ -24,6 +29,7 @@ function Subscribe() {
     if (amount == 0){
       return toast.success("Free Plan Activated")
     }
+    setLoading(true);
     try {
       const res = await axios.post('http://localhost:5000/payment/razorpay', {
         amount, // Ensure amount is converted to number
@@ -34,10 +40,8 @@ function Subscribe() {
       console.log("data",data)
       const options = {
         key: "rzp_test_7kbetSV9IQQW2J",
-        // key_secret: "Qhj1owYbcPBUWhAgBP8MIgnc",
         amount: data.amount,
         currency: "INR",
-        // order_receipt: 'order_rcptid_' + data.name,
         name: "Subscribtion managment",
         description: "for testing purpose",
         order_id: data.id,
@@ -59,6 +63,7 @@ function Subscribe() {
               }, 5000);
             } else {
               toast.error('Payment verification failed');
+              navigate('/payment-failure');
             }
           })
           .catch(error => {
@@ -86,6 +91,8 @@ function Subscribe() {
     } catch (error) {
       console.error('Error initiating payment at frontend: ', error);
       toast.error('Failed to initiate payment');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -182,7 +189,11 @@ function Subscribe() {
                     className="text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     onClick={() => handlePayment(plan.amount)}
                   >
-                    Get started
+                    {loading ? (
+                    <LoaderCircle size={20} color={"#ffffff"} />
+                  ) : (
+                    "Get started"
+                  )}
                   </button>
                 </div>
               ))}

@@ -69,6 +69,7 @@ function Subscribe() {
           .catch(error => {
             console.error('Error verifying payment:', error);
             toast.error('Payment verification failed');
+            navigate('/payment-failure');
           });
         },
         theme: {
@@ -79,13 +80,14 @@ function Subscribe() {
       let rzp = new window.Razorpay(options);
       rzp.open();
       rzp.on('payment.failed', function (response : any){
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
+        toast.error("Failed Error Code : ",response.error.code);
+        toast.error("Failed Due to : ",response.error.description);
+        toast.error(response.error.reason);
+        toast.error(response.error.metadata.order_id);
+        toast.error(response.error.metadata.payment_id);
+        setTimeout(() => {
+          navigate('/payment-failure');
+        }, 10000);
     })
 
     } catch (error) {

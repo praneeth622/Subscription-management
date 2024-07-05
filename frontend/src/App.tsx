@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from '../src/ProtectedRoute';
 import Subscribe from './pages/Subscribe';
 import PaymentFailure from './pages/Paymentfaliure';
+import SignIn from './auth/signin/SignIn';
+import Signup from './auth/signup/Signup';
 
 
 const App = () => {
@@ -11,11 +13,17 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>} />
-        <Route path="/subscribe" element={<Subscribe />} />
-        <Route path="/payment-failure" element={<PaymentFailure />} />
+        <Route path="/subscribe" element={<ProtectedRoute>
+          <Subscribe />
+        </ProtectedRoute>}/>
+        <Route path="/payment-failure" element={<ProtectedRoute>
+          <PaymentFailure />
+        </ProtectedRoute>} />
       </Routes>
     </Router>
   );

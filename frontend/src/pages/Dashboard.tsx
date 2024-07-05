@@ -13,7 +13,7 @@ const Dashboard = () => {
     useEffect(() => {
         if (user) {
           const userEmail = user.emailAddresses[0].emailAddress;
-          const userId = user.id; // Using user id as a temporary password, consider improving this
+          const userId = user.id; // Using user id as a temporary password
     
           setUserEmail(userEmail);
           setUserId(userId);

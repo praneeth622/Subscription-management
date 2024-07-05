@@ -86,7 +86,7 @@ function Subscribe() {
         toast.error(response.error.metadata.order_id);
         toast.error(response.error.metadata.payment_id);
         setTimeout(() => {
-          navigate('/payment-failure');
+          navigate('/payment-failure', { state: { orderId: response.error.metadata.order_id, paymentId: response.error.metadata.payment_id } });
         }, 10000);
     })
 

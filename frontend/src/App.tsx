@@ -4,8 +4,8 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from '../src/ProtectedRoute';
 import Subscribe from './pages/Subscribe';
 import PaymentFailure from './pages/Paymentfaliure';
-import SignIn from './auth/signin/SignIn';
-import Signup from './auth/signup/Signup';
+import SignIn from './pages/auth/signin/SignIn';
+import Signup from './pages/auth/signup/Signup';
 
 
 const App = () => {

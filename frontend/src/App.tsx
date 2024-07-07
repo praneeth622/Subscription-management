@@ -4,7 +4,8 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from '../src/ProtectedRoute';
 import Subscribe from './pages/Subscribe';
 import PaymentFailure from './pages/Paymentfaliure';
-
+import Create from './pages/create';
+import Guide from './pages/guide';
 
 const App = () => {
   return (
@@ -16,6 +17,8 @@ const App = () => {
         </ProtectedRoute>} />
         <Route path="/subscribe" element={<Subscribe />} />
         <Route path="/payment-failure" element={<PaymentFailure />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/guide" element={<Guide />} />
       </Routes>
     </Router>
   );

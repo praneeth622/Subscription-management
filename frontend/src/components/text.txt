@@ -2,12 +2,9 @@ import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/c
 import { Link } from 'react-router-dom';
 import SubscriptionStatus from './SubscriptionStatus';
 import { IoIosArrowDropright } from "react-icons/io";
-import { useState } from 'react';
 
 const Sidebar = () => {
   const { user } = useUser();
-
-  const [open, SetOpen] = useState(true);
 
   return (
     <div className="h-screen w-64 bg-white shadow-lg border-r border-gray-200">
@@ -20,9 +17,6 @@ const Sidebar = () => {
           </Link>
         </div>
         <div className="flex-1 flex flex-col items-start px-4 py-4 space-y-4">
-        <Link to="/guide" className="text-xl font-bold">
-            My Guide
-          </Link>
           <div>
             <SubscriptionStatus />
           </div>

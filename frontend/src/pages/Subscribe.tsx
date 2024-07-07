@@ -1,5 +1,5 @@
 import axios from "axios";
-import Navbar from "../components/navbarr";
+import Sidebar from "../components/navbarr";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Razorpay from "razorpay";
@@ -12,22 +12,20 @@ interface PricingPlan {
   title: string;
   description: string;
   price: string;
-  amount:Number;
+  amount: Number;
   period: string;
   features: string[];
 }
 
 function Subscribe() {
-  
-  const {user} = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  const userId = user?.emailAddresses
+  const userId = user?.emailAddresses;
 
   const handlePayment = async (amount: Number) => {
-    if (amount == 0){
-      return toast.success("Free Plan Activated")
+    if (amount === 0) {
+      return toast.success("Free Plan Activated");
     }
     setLoading(true);
     try {
@@ -37,61 +35,62 @@ function Subscribe() {
       });
 
       const { data } = res;
-      console.log("data",data)
+      console.log("data", data);
+
       const options = {
         key: "rzp_test_7kbetSV9IQQW2J",
         amount: data.amount,
         currency: "INR",
-        name: "Subscribtion managment",
-        description: "for testing purpose",
+        name: "Subscription Management",
+        description: "For testing purpose",
         order_id: data.id,
         handler: function (response: any) {
-          console.log("response",response)
+          console.log("response", response);
           const paymentResponse = {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_signature: response.razorpay_signature,
             userEmail: data.userEmail
           };
-          console.log(paymentResponse)
+          console.log(paymentResponse);
           axios.post('http://localhost:5000/payment/razorpay/callback', paymentResponse)
-          .then(res => {
-            if (res.data.status === 'Payment verified successfully') {
-              toast.success('Payment Successful');
-              setTimeout(() => {
-                window.location.reload()
-              }, 5000);
-            } else {
+            .then(res => {
+              if (res.data.status === 'Payment verified successfully') {
+                toast.success('Payment Successful');
+                setTimeout(() => {
+                  window.location.reload();
+                }, 5000);
+              } else {
+                toast.error('Payment verification failed');
+                navigate('/payment-failure');
+              }
+            })
+            .catch(error => {
+              console.error('Error verifying payment:', error);
               toast.error('Payment verification failed');
               navigate('/payment-failure');
-            }
-          })
-          .catch(error => {
-            console.error('Error verifying payment:', error);
-            toast.error('Payment verification failed');
-            navigate('/payment-failure');
-          });
+            });
         },
         theme: {
           color: '#528FF0',
         },
       };
+
       //@ts-ignore
       let rzp = new window.Razorpay(options);
       rzp.open();
-      rzp.on('payment.failed', function (response : any){
-        toast.error("Failed Error Code : ",response.error.code);
-        toast.error("Failed Due to : ",response.error.description);
+      rzp.on('payment.failed', function (response: any) {
+        toast.error(`Failed Error Code: ${response.error.code}`);
+        toast.error(`Failed Due to: ${response.error.description}`);
         toast.error(response.error.reason);
         toast.error(response.error.metadata.order_id);
         toast.error(response.error.metadata.payment_id);
         setTimeout(() => {
           navigate('/payment-failure');
         }, 10000);
-    })
-
+      });
     } catch (error) {
-      console.error('Error initiating payment at frontend: ', error);
+      console.error('Error initiating payment at frontend:', error);
       toast.error('Failed to initiate payment');
     } finally {
       setLoading(false);
@@ -103,7 +102,7 @@ function Subscribe() {
       title: "Starter",
       description: "Best option for personal use & for your next project.",
       price: "Free",
-      amount:0,
+      amount: 0,
       period: "/month",
       features: [
         "Individual configuration",
@@ -117,7 +116,7 @@ function Subscribe() {
       title: "Basic",
       description: "Relevant for multiple users, extended & premium support.",
       price: "10",
-      amount:10,
+      amount: 10,
       period: "/month",
       features: [
         "Individual configuration",
@@ -132,7 +131,7 @@ function Subscribe() {
       description:
         "Best for large scale uses and extended redistribution rights.",
       price: "50",
-      amount:50,
+      amount: 50,
       period: "/month",
       features: [
         "Individual configuration",
@@ -145,10 +144,10 @@ function Subscribe() {
   ];
 
   return (
-    <div>
-      <Navbar />
-      <div className="App">
-        <section className="bg-white ">
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-grow">
+        <section className="bg-white">
           <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
             <div className="space-y-8 md:grid md:grid-cols-3 md:gap-12 md:space-y-0">
               {pricingPlans.map((plan, index) => (
@@ -164,7 +163,7 @@ function Subscribe() {
                   </p>
                   <div className="flex justify-center items-baseline my-8">
                     <span className="mr-2 text-5xl font-extrabold">
-                    ₹{plan.price}
+                      ₹{plan.price}
                     </span>
                     <span className="text-gray-500">{plan.period}</span>
                   </div>
@@ -190,19 +189,20 @@ function Subscribe() {
                   <button
                     className="text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     onClick={() => handlePayment(plan.amount)}
+                    disabled={loading}
                   >
                     {loading ? (
-                    <LoaderCircle size={20} color={"#ffffff"} />
-                  ) : (
-                    "Get started"
-                  )}
+                      <LoaderCircle size={20} color={"#ffffff"} />
+                    ) : (
+                      "Get started"
+                    )}
                   </button>
                 </div>
               ))}
             </div>
           </div>
         </section>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const Sidebar = () => {
         <div className="flex-shrink-0 px-4 py-4">
         <IoIosArrowDropright className='text-3xl'/>
           <Link to="/dashboard" className="text-xl font-bold">
-            My App
+            Arty
           </Link>
         </div>
         <div className="flex-1 flex flex-col items-start px-4 py-4 space-y-4">

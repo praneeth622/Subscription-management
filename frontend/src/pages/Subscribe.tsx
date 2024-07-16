@@ -96,7 +96,8 @@ function Subscribe() {
       setLoading(false);
     }
   };
-
+  const [isYearly, setIsYearly] = useState(false)
+  const togglePricingPeriod = (value: string) => setIsYearly(parseInt(value) === 1)
   const pricingPlans: PricingPlan[] = [
     {
       title: "Starter",

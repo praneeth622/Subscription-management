@@ -32,14 +32,14 @@ const SubscriptionStatus = () => {
   }, [user]);
 
   return (
-    <div className=" mx-3 px-3 ">
+    <div className=" mx-1 px-1 ">
       {/* <h2 className="text-xl font-bold">Subscription Status</h2> */}
       {subscriptionStatus ? (
         <div onClick={()=>{
           toast.warning("You already Subscribed")
         }} className="text-green-600 cursor-pointer">You are subscribed!</div>
       ) : (
-        <div className="mt-auto p-4">
+        <div className="mt-auto ">
               <Card x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
                   <CardTitle>Upgrade to Pro</CardTitle>

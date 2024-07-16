@@ -2,8 +2,13 @@ import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "./ui/button";
+import { useNavigate } from 'react-router-dom';
 
 const SubscriptionStatus = () => {
+  const navigate = useNavigate();
+
   // Mock subscription status
   const isSubscribed = false; 
   const [subscriptionStatus,setSubscriptionStatus] = useState(null)
@@ -34,9 +39,25 @@ const SubscriptionStatus = () => {
           toast.warning("You already Subscribed")
         }} className="text-green-600 cursor-pointer">You are subscribed!</div>
       ) : (
-        <a href='/subscribe' className="text-red-600">You are not subscribed.</a>
+        <div className="mt-auto p-4">
+              <Card x-chunk="dashboard-02-chunk-0">
+                <CardHeader className="p-2 pt-0 md:p-4">
+                  <CardTitle>Upgrade to Pro</CardTitle>
+                  <CardDescription>
+                    Unlock all features and get unlimited access to our support
+                    team.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                  <Button size="sm" className="w-full" onClick={() => navigate('/subscribe')}>
+                    Upgrade
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
       )}
-    </div>
+        {/* <a href='/subscribe' className="text-red-600">You are not subscribed.</a> */}
+        </div>
   );
 };
 

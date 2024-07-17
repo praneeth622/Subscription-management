@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Popup } from "@/components/component/popup";
+import { ArtworksList } from "@/components/component/artworks-list";
 
 
 const Dashboard: React.FC = () => {
@@ -59,7 +60,6 @@ const Dashboard: React.FC = () => {
 </div>
 
             </div>
-            
             <ToastContainer />
         </div>
     );

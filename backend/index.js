@@ -8,7 +8,7 @@ const cors = require("cors");
 const crypto = require("crypto");
 require('dotenv').config();
 const db = require("./conn/conn");
-
+const guideRouter = require("./routes/guideRouter");
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -174,7 +174,7 @@ app.post("/payment/razorpay/callback", async (req, res) => {
     res.status(400).json({ status: "Payment verification failed" });
   }
 });
-
+app.use("/guide", guideRouter);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

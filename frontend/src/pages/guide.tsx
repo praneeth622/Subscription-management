@@ -57,13 +57,13 @@ const initialArtworks =[
 ];
 const Guide = () => {
   return (
-    <div className='flex w-full'>
+    <div className='flex  w-full'>
         <Sidebar />
         {/* <ArtworksList/> */}
 
-     <div className="flex flex-col w-[80vw]">
-          <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-            <div className="w-full flex-1">
+     <div className="flex flex-col   md:w-[80vw]">
+          <header className="flex h-14   items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+            <div className="w-full flex-1 hidden md:block">
               <form>
                 <div className="relative">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -93,8 +93,11 @@ const Guide = () => {
             </DropdownMenu> */}
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
               <h1 className="text-lg font-semibold md:text-2xl">Artworks </h1>
+              <Button>
+                Add Artwork
+              </Button>
             </div>
             <div
               className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm" x-chunk="dashboard-02-chunk-1"

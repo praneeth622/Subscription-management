@@ -61,7 +61,7 @@ const Guide = () => {
         <Sidebar />
         {/* <ArtworksList/> */}
 
-     <div className="flex flex-col   md:w-[80vw]">
+     <div className="flex flex-col  w-full md:w-[80vw]">
           <header className="flex h-14   items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <div className="w-full flex-1 hidden md:block">
               <form>

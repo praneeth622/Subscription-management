@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Popup } from "@/components/component/popup";
-import { ArtworksList } from "@/components/component/artworks-list";
+import { getStarted } from "@/components/component/get-started";
 
 
 const Dashboard: React.FC = () => {
@@ -44,22 +44,7 @@ const Dashboard: React.FC = () => {
 
         <div className="flex">
             <Sidebar />
-            <div className="flex-1 min-h-screen bg-gray-100 flex flex-col items-center ">
-                <h1 className="text-4xl font-bold mt-5">Welcome, {user?.firstName}</h1>
-                <div className="bg-customPurple p-6 rounded-lg h-[40%] w-[90%] mt-[20px]">
-                  <h1> Welcome to Artistry</h1>
                    <Popup/>
-                  <button 
-      className="bg-buttonPurple hover:bg-darkP text-white font-bold py-2 px-4 rounded"
-      onClick={() => navigate('/create')}
-    >
-      Click Me
-    </button>
-
-
-</div>
-
-            </div>
             <ToastContainer />
         </div>
     );

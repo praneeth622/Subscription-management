@@ -7,6 +7,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface PricingPlan {
   title: string;
@@ -150,7 +151,16 @@ function Subscribe() {
       <div className="flex-grow">
         <section className="bg-white">
           <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Pricing Plans</h2>
+                <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Choose the plan that fits your business needs. Customize your plan with our pricing plan generator.
+                </p>
+              </div>
+              </div>
             <div className="space-y-8 md:grid md:grid-cols-3 md:gap-12 md:space-y-0">
+              
               {pricingPlans.map((plan, index) => (
                 <div
                   key={index}
@@ -187,8 +197,8 @@ function Subscribe() {
                       </li>
                     ))}
                   </ul>
-                  <button
-                    className="text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  <Button
+                    // className="text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                     onClick={() => handlePayment(plan.amount)}
                     disabled={loading}
                   >
@@ -197,7 +207,7 @@ function Subscribe() {
                     ) : (
                       "Get started"
                     )}
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>

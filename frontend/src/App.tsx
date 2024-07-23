@@ -6,7 +6,8 @@ import Subscribe from './pages/Subscribe';
 import PaymentFailure from './pages/Paymentfaliure';
 import SignIn from './pages/auth/signin/SignIn';
 import Signup from './pages/auth/signup/Signup';
-
+import Create from './pages/create';
+import Guide from './pages/guide';
 
 const App = () => {
   return (
@@ -18,12 +19,8 @@ const App = () => {
         <Route path="/dashboard" element={<ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>} />
-        <Route path="/subscribe" element={<ProtectedRoute>
-          <Subscribe />
-        </ProtectedRoute>}/>
-        <Route path="/payment-failure" element={<ProtectedRoute>
-          <PaymentFailure />
-        </ProtectedRoute>} />
+        <Route path="/subscribe" element={<Subscribe />} />
+        <Route path="/payment-failure" element={<PaymentFailure />} />
       </Routes>
     </Router>
   );

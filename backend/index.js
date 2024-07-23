@@ -3,40 +3,17 @@ const bodyParser = require("body-parser");
 const razorpay = require("./Payment/Razorpay");
 const Razorpay = require("razorpay");
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Types;
 const cors = require("cors");
 const crypto = require("crypto");
 require('dotenv').config();
 const db = require("./conn/conn");
-
+const guideRouter = require("./routes/guideRouter");
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const transactionSchema = new mongoose.Schema({
-  amount: { type: Number, required: true },
-  gateway: { type: String },
-  transactionId: { type: String },
-  status: {
-    type: String,
-    enum: ["pending", "completed", "failed"],
-    default: "pending",
-  },
-  createdAt: { type: Date, default: Date.now },
-  userEmail: { type: String },
-});
-
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  subscriptionStatus: { type: Boolean, default: false },
-  subscription: { type: ObjectId, ref: "subscriptions" },
-  createdAt: { type: Date, default: Date.now },
-});
-
-const Transaction = mongoose.model("Transaction", transactionSchema);
-const User = mongoose.model("Subscriber", userSchema);
-
+const Transaction = require("./models/Transaction");
+const User = require("./models/User");
 //creating user
 app.post("/user", async (req, res) => {
   const { email, Id } = req.body;
@@ -174,7 +151,7 @@ app.post("/payment/razorpay/callback", async (req, res) => {
     res.status(400).json({ status: "Payment verification failed" });
   }
 });
-
+app.use("/guide", guideRouter);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

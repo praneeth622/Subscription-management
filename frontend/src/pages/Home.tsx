@@ -15,7 +15,7 @@ const Home = () => {
           <div className="relative flex items-center justify-between h-16">
             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex-shrink-0">
-                <h1 className="text-xl font-bold">My App</h1>
+                <h1 className="text-xl font-bold">Arty</h1>
               </div>
               <div className="ml-auto">
                 <button

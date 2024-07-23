@@ -1,14 +1,19 @@
-import Navbar from '../components/navbarr';
+import Sidebar from "../components/navbarr";
 import { useEffect, useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import { useUser } from "@clerk/clerk-react";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Popup } from "@/components/component/popup";
+import { getStarted } from "@/components/component/get-started";
 
-const Dashboard = () => {
+
+const Dashboard: React.FC = () => {
     const { user } = useUser();
     const [userEmail, setUserEmail] = useState('');
     const [userId, setUserId] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
@@ -33,15 +38,14 @@ const Dashboard = () => {
     
           createUser(userEmail, userId);
         }
-      }, [user]);
-    
+    }, [user]);
+
     return (
-        <div>
-            <Navbar />
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-                <h1 className="text-4xl font-bold">Welcome, {user?.firstName}</h1>
-            </div>
-            <ToastContainer/>
+
+        <div className="flex">
+            <Sidebar />
+                   <Popup/>
+            <ToastContainer />
         </div>
     );
 };

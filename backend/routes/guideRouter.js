@@ -1,6 +1,19 @@
 const express = require("express");
 const Guide = require("../models/guideModel");
 const router = express.Router();
+const multer = require('multer');
+const { Storage } = require('@google-cloud/storage');
+const path = require('path');
+const uuid = require('uuid');
+
+// Configure multer for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Instantiate a storage client
+const storageClient = new Storage();
+const bucketName = 'vertex-ai-project1';
+
 
 // Create a new guide
 router.post("/create", async (req, res) => {
@@ -97,6 +110,55 @@ router.delete("/delete/:id", async (req, res) => {
   } catch (error) {
     console.error("Error deleting guide:", error);
     res.status(500).json({ error: "Failed to delete guide" });
+  }
+});
+
+
+//upload route
+router.post("/upload",(req,res)=>{
+  const file = req.file;
+  if(!file){
+    res.status(500).json({
+      "message":"File not found"
+    })
+  }
+
+  
+})
+
+// Function to upload file to GCP
+const uploadFileToGCP = async (file) => {
+  
+  const blob = storageClient.bucket(bucketName).file(`${uuid.v4()}-${file.originalname}`);
+  const blobStream = blob.createWriteStream({
+    resumable: false,
+  });
+
+  return new Promise((resolve, reject) => {
+    blobStream
+      .on('finish', () => {
+        const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
+        resolve(publicUrl);
+      })
+      .on('error', (err) => {
+        reject(err);
+      })
+      .end(file.buffer);
+  });
+};
+
+// POST endpoint to upload a file
+app.post('/uploadFile', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send('No file uploaded.');
+    }
+
+    const publicUrl = await uploadFileToGCP(req.file);
+    res.status(200).send({ fileUrl: publicUrl });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error uploading file.');
   }
 });
 
